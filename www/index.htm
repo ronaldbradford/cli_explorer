@@ -66,6 +66,20 @@
             <li role="presentation"><a href="#">Intermediate</a></li>
             <li role="presentation"><a href="#">Expert</a></li>
           </ul>
+          <div class="row" style="margin-top:40px">
+          <div class="col-md-12">
+          <div class="form-group">
+            <label for="os-auth-url">Identity Public URL</label>
+            <input name="os-auth-url" class="form-control" value="http://localhost:5000/v2.0/" style="width:250px"></input>
+          </div> <!-- form-group -->
+          <div class="form-group">
+            <button class="btn btn-primary test">Test URL</button>
+          </div> <!-- form-group -->
+          </div> <!-- col -->
+          </div> <!-- row -->
+
+          <div class="row" style="margin-top:40px">
+          <div class="col-md-12">
           <div class="form-group">
             <label for="os-username">Username</label>
             <input name="os-username" class="form-control" value="admin"></input>
@@ -79,21 +93,22 @@
             <input name="os-project-name" class="form-control" value="admin"></input>
           </div> <!-- form-group -->
           <div class="form-group">
-            <label for="os-auth-url">Identity Public URL</label>
-            <input name="os-auth-url" class="form-control" value="http://localhost:5000/v2.0/"></input>
-          </div> <!-- form-group -->
-          <div class="form-group">
+            <button class="btn btn-primary test">Test Values</button>
             <button class="btn btn-success save">Save</button>
             <button class="btn btn-warning cancel" style="float:right">Cancel</button>
           </div> <!-- form-group -->
+          </div> <!-- col -->
+          </div> <!-- row -->
         </form>
       </fieldset>
       <fieldset id="authentication_console" style="display:none">
         <legend>Console</legend>
         <h3>Command</h3>
+<div class="alert alert-danger">This is mock output</div>
         <pre>
 $ curl -sL <b>http://localhost:5000/v2.0/</b> | python -m json.tool </pre>
         <h3>Output</h3>
+<div class="alert alert-danger">This is mock output</div>
         <pre>
 {
     "version": {
@@ -122,9 +137,11 @@ $ curl -sL <b>http://localhost:5000/v2.0/</b> | python -m json.tool </pre>
         </pre>
 
 <h3>Command</h3>
+<div class="alert alert-danger">This is mock output</div>
         <pre>
 $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantName": "<b>admin</b>", "passwordCredentials": { "username": "<b>admin</b>", "password": "<b>passwd/</b>" } } }' <b>http://localhost:5000/v2.0/</b>tokens | python -m json.tool </pre>
-<h3>Response</h3>
+<h3>Output</h3>
+<div class="alert alert-danger">This is mock output</div>
 <pre>
 {
     "access": {
@@ -335,11 +352,11 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
           </ul>
           <h1>Command Line Options</h1>
           <div class="row" style="margin-top:40px">
-            <div class="col-lg-12">
+            <div class="col-md-12">
               <div id="msg" class="alert" style="display:none">
               </div> <! -- #msg -->
             </div> <!-- col -->
-            <div class="col-lg-12">
+            <div class="col-md-12">
               <button class="btn authentication">Authentication</button>
               <button class="btn logging">Logging</button>
     
@@ -391,13 +408,13 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
 
       <h3>Command</h3>
 <!--
-<pre>
 $ openstack --os-username=admin --os-password=passwd --os-project-name=admin --os-auth-url=http://localhost:5000/ <b>image list</b>
 </pre>
--->
-<pre>
 $ openstack --os-username=admin --os-password=passwd --os-project-name=admin --os-auth-url=http://localhost:5000/  <b>user list --long --format csv</b> </pre>
+-->
+<pre id="execute"></pre>
       <h3>Output  <small><button class="btn btn-warning">Download</button></h3>
+<div class="alert alert-danger">This is mock output</div>
 
 <pre>
 "ID","Name","Project","Email","Enabled"
@@ -462,28 +479,28 @@ var os = new Object();
 
 // Navigation/Display Sections
 $('.authentication').click(function() {
-  console.log(".authentication");
+  console.log('.authentication');
   $('#explorer_page').hide();
   $('#authentication_page').show();
   return false;
 });
 
 $('.logging').click(function() {
-  console.log(".authentication");
+  console.log('.authentication');
   $('#explorer_page').hide();
   $('#logging_page').show();
   return false;
 });
 
 $('.format').click(function() {
-  console.log(".format");
+  console.log('.format');
   $('#explorer_page').hide();
   $('#format_page').show();
   return false;
 });
 
 $('.explorer').click(function() {
-  console.log(".explorer");
+  console.log('.explorer');
   $('#explorer_page').show();
   $('#authentication_page').hide();
   return false;
@@ -491,8 +508,7 @@ $('.explorer').click(function() {
 
 // Form Button Management
 $('#authentication_page .save').click(function() {
-  console.log("#authentication_page.save");
-  $('#authentication_console').show();
+  console.log('#authentication_page.save');
   
   authentication = new Object();
   authentication['os-username'] = $('#authentication_page input[name=os-username]').val();
@@ -506,8 +522,14 @@ $('#authentication_page .save').click(function() {
   return false;
 });
 
+$('#authentication_page .test').click(function() {
+  console.log('#authentication_page.test');
+  $('#authentication_console').show();
+  return false;
+});
+
 $('#logging_page .save').click(function() {
-  console.log("#logging_page.save");
+  console.log('#logging_page.save');
   $('#explorer_console').show();
 
   logging = new Object();
@@ -520,7 +542,7 @@ $('#logging_page .save').click(function() {
 });
 
 $('#format_page .save').click(function() {
-  console.log("#format_page.save");
+  console.log('#format_page.save');
 
   format = new Object();
   format['format'] = $('#format_page select[name=format]').val();
@@ -534,13 +556,13 @@ $('#format_page .save').click(function() {
 });
 
 $('.cancel').click(function() {
-  console.log(".cancel");
+  console.log('.cancel');
   show_explorer_page($(this));
   return false;
 });
 
 $('#explorer_page .run').click(function() {
-  console.log("#explorer_page.run");
+  console.log('#explorer_page.run');
   cli = 'openstack';
   command = $('#explorer_page select[name=command]').val();
   action = $('#explorer_page select[name=action]').val();
@@ -575,7 +597,8 @@ $('#explorer_page .run').click(function() {
     }
   }
 
-  console.log("Executing " + execute);
+  $('#execute').text(execute);
+  console.log('Executing ' + execute);
   $('#explorer_console').show();
   return false;
 });
