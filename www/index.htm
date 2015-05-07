@@ -104,12 +104,10 @@
       <fieldset id="authentication_console" style="display:none">
         <legend>Console</legend>
         <h3>Command</h3>
-<div class="alert alert-danger">This is mock output</div>
-        <pre>
-$ curl -sL <b>http://localhost:5000/v2.0/</b> | python -m json.tool </pre>
+        <pre class="execute"></pre>
         <h3>Output</h3>
 <div class="alert alert-danger">This is mock output</div>
-        <pre>
+        <pre class="console">
 {
     "version": {
         "id": "v2.0",
@@ -136,6 +134,7 @@ $ curl -sL <b>http://localhost:5000/v2.0/</b> | python -m json.tool </pre>
 }
         </pre>
 
+<!--
 <h3>Command</h3>
 <div class="alert alert-danger">This is mock output</div>
         <pre>
@@ -279,6 +278,7 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
     }
 }
 </pre>
+-->
       </fieldset>
      </div> <!-- container -->
   </section> <!-- login_page -->
@@ -525,6 +525,23 @@ $('#authentication_page .save').click(function() {
 $('#authentication_page .test').click(function() {
   console.log('#authentication_page.test');
   $('#authentication_console').show();
+  option = $(this).text();
+  
+  url = $('#authentication_page input[name=os-auth-url]').val();
+  //TODO IF url does not have trailing / add it
+  username = $('#authentication_page input[name=os-username]').val();
+  password = $('#authentication_page input[name=os-password]').val();
+  project_name = $('#authentication_page input[name=os-project-name]').val();
+
+  if (option == 'Test URL') {
+    execute = 'curl -sL ' + url + ' | python -m json.tool';
+  } else if (option == 'Test Values') {
+    execute  = 'curl -sL -H "Content-Type: application/json" -X POST';
+    execute += ' -d \'{ "auth": { "tenantName": "' + project_name + '", "passwordCredentials": { "username": "' + username + '", "password": "' + password + '" } } }\'';
+    execute += ' ' + url + 'tokens | python -m json.tool';
+  }
+
+  $('#authentication_page .execute').text(execute);
   return false;
 });
 
