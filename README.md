@@ -1,2 +1,3 @@
 # os_explorer
-OS Explorer for Command Line (CLI) Clients
+A web interface for exploring the various OpenStack CLI toolsr
+Ronald Bradford <me@ronaldbradford.com>

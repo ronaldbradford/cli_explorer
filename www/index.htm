@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Web Explorer for OpenStack Command Line (CLI) Clients">
+    <meta name="author" content="Ronald Bradford">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <title>OpenStack CLI Explorer</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="styles.css"  rel="stylesheet" type="text/css">
+    <!-- NON CDN
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/modern-business.css" rel="stylesheet">
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"> <!-- Navigation -->
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.htm">OS Explorer</a>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+          <li role="presentation"> <a class="notloggedin explorer">Explorer</a> </li>
+          <li class="dropdown">
+            <a href="#tools" class="dropdown-toggle" data-toggle="dropdown">CLI Tools <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+               <li role="presentation"> <a href="#">OpenStackClient</a> </li>
+               <li role="presentation" class="disabled"> <a href="#">Nova Client</a> </li>
+               <li role="presentation" class="disabled"> <a href="#">Keystone Client</a> </li>
+               <li role="presentation" class="disabled"> <a href="#">Glance Client</a> </li>
+             </ul>
+          </li>
+        </ul>
+      </div> <!-- /.navbar-collapse -->
+    </div> <!-- /.container -->
+  </nav>
+
+  <section id="authentication_page" style="display:none">
+    <div class="container-fluid">
+      <fieldset>
+        <legend>Authentication</legend>
+        <form class="form-inline" method="POST">
+          <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#">Beginner</a></li>
+            <li role="presentation"><a href="#">Intermediate</a></li>
+            <li role="presentation"><a href="#">Expert</a></li>
+          </ul>
+          <div class="form-group">
+            <label for="os-username">Username</label>
+            <input name="os-username" class="form-control" value="admin"></input>
+          </div> <!-- form-group -->
+          <div class="form-group">
+            <label for="os-password">Password</label>
+            <input name="os-password" class="form-control" value="passwd"></input>
+          </div> <!-- form-group -->
+          <div class="form-group">
+            <label for="os-project-name">Project Name</label>
+            <input name="os-project-name" class="form-control" value="admin"></input>
+          </div> <!-- form-group -->
+          <div class="form-group">
+            <label for="os-auth-url">Identity Public URL</label>
+            <input name="os-auth-url" class="form-control" value="http://localhost:5000/v2.0/"></input>
+          </div> <!-- form-group -->
+          <div class="form-group">
+            <button class="btn btn-success save">Save</button>
+            <button class="btn btn-warning cancel" style="float:right">Cancel</button>
+          </div> <!-- form-group -->
+        </form>
+      </fieldset>
+      <fieldset id="authentication_console" style="display:none">
+        <legend>Console</legend>
+        <h3>Command</h3>
+        <pre>
+$ curl -sL <b>http://localhost:5000/v2.0/</b> | python -m json.tool </pre>
+        <h3>Output</h3>
+        <pre>
+{
+    "version": {
+        "id": "v2.0",
+        "links": [
+            {
+                "href": "http://localhost:5000/v2.0/",
+                "rel": "self"
+            },
+            {
+                "href": "http://docs.openstack.org/",
+                "rel": "describedby",
+                "type": "text/html"
+            }
+        ],
+        "media-types": [
+            {
+                "base": "application/json",
+                "type": "application/vnd.openstack.identity-v2.0+json"
+            }
+        ],
+        "status": "stable",
+        "updated": "2014-04-17T00:00:00Z"
+    }
+}
+        </pre>
+
+<h3>Command</h3>
+        <pre>
+$ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantName": "<b>admin</b>", "passwordCredentials": { "username": "<b>admin</b>", "password": "<b>passwd/</b>" } } }' <b>http://localhost:5000/v2.0/</b>tokens | python -m json.tool </pre>
+<h3>Response</h3>
+<pre>
+{
+    "access": {
+        "metadata": {
+            "is_admin": 0,
+            "roles": [
+                "37f3e04433d44863bfd6d40b0d7a56df"
+            ]
+        },
+        "serviceCatalog": [
+            {
+                "endpoints": [
+                    {
+                        "adminURL": "http://192.168.42.102:8774/v2/8be731da841e47a19c35504de266177b",
+                        "id": "7d2fb65de0724da09625843b6883c88c",
+                        "internalURL": "http://192.168.42.102:8774/v2/8be731da841e47a19c35504de266177b",
+                        "publicURL": "http://192.168.42.102:8774/v2/8be731da841e47a19c35504de266177b",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "nova",
+                "type": "compute"
+            },
+            {
+                "endpoints": [
+                    {
+                        "adminURL": "http://192.168.42.102:8776/v2/8be731da841e47a19c35504de266177b",
+                        "id": "182ba3e11f5a4fd19f3974f1bba25574",
+                        "internalURL": "http://192.168.42.102:8776/v2/8be731da841e47a19c35504de266177b",
+                        "publicURL": "http://192.168.42.102:8776/v2/8be731da841e47a19c35504de266177b",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "cinderv2",
+                "type": "volumev2"
+            },
+            {
+                "endpoints": [
+                    {
+                        "adminURL": "http://192.168.42.102:9292",
+                        "id": "3df86e53544949e19047fe6e10c6986c",
+                        "internalURL": "http://192.168.42.102:9292",
+                        "publicURL": "http://192.168.42.102:9292",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "glance",
+                "type": "image"
+            },
+            {
+                "endpoints": [
+                    {
+                        "adminURL": "http://192.168.42.102:8776/v1/8be731da841e47a19c35504de266177b",
+                        "id": "650b47af4bfe4d84a710202b9bcf1f90",
+                        "internalURL": "http://192.168.42.102:8776/v1/8be731da841e47a19c35504de266177b",
+                        "publicURL": "http://192.168.42.102:8776/v1/8be731da841e47a19c35504de266177b",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "cinder",
+                "type": "volume"
+            },
+            {
+                "endpoints": [
+                    {
+                        "adminURL": "http://192.168.42.102:8773/",
+                        "id": "005699ca2bc048af9698a941260f4d81",
+                        "internalURL": "http://192.168.42.102:8773/",
+                        "publicURL": "http://192.168.42.102:8773/",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "ec2",
+                "type": "ec2"
+            },
+            {
+                "endpoints": [
+                    {
+                        "adminURL": "http://192.168.42.102:8774/v2.1/8be731da841e47a19c35504de266177b",
+                        "id": "5743e9040e8944ce9d3c950cfb23d67f",
+                        "internalURL": "http://192.168.42.102:8774/v2.1/8be731da841e47a19c35504de266177b",
+                        "publicURL": "http://192.168.42.102:8774/v2.1/8be731da841e47a19c35504de266177b",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "novav21",
+                "type": "computev21"
+            },
+            {
+                "endpoints": [
+                    {
+                        "adminURL": "http://192.168.42.102:35357/v2.0",
+                        "id": "548265871ddb43cb886909ff9b6e22cd",
+                        "internalURL": "http://192.168.42.102:5000/v2.0",
+                        "publicURL": "http://192.168.42.102:5000/v2.0",
+                        "region": "RegionOne"
+                    }
+                ],
+                "endpoints_links": [],
+                "name": "keystone",
+                "type": "identity"
+            }
+        ],
+        "token": {
+            "audit_ids": [
+                "P8ySdJ5OQr2n1UIXss5MIQ"
+            ],
+            "expires": "2015-05-06T18:11:15Z",
+            "id": "6ddb599a0ec440db94c72ac4612c107a",
+            "issued_at": "2015-05-06T17:11:15.029333",
+            "tenant": {
+                "description": null,
+                "enabled": true,
+                "id": "8be731da841e47a19c35504de266177b",
+                "name": "admin"
+            }
+        },
+        "user": {
+            "id": "554209509f5b47e286e0379bcbf66762",
+            "name": "admin",
+            "roles": [
+                {
+                    "name": "admin"
+                }
+            ],
+            "roles_links": [],
+            "username": "admin"
+        }
+    }
+}
+</pre>
+      </fieldset>
+     </div> <!-- container -->
+  </section> <!-- login_page -->
+
+  <section id="logging_page" style="display:none">
+    <div class="container-fluid">
+      <fieldset>
+        <legend>Logging</legend>
+        <form class="form-inline" method="POST">
+          <div class="form-group">
+            <select name="logging" class="form-control">
+              <option value="">Default</option>
+              <option value="-q">Quiet (-q)</option>
+              <option value="-v">Verbose (-v)</option>
+              <option value="--debug">Debug (--debug)</option>
+              <option value="--timing">Timing (--timing)</option>
+              <option value="--log-file">Log File (--log-file)</option>
+            </select>
+          </div> <!-- form-group -->
+          <div class="form-group">
+            <button class="btn btn-success save">Save</button>
+            <button class="btn btn-warning cancel" style="float:right">Cancel</button>
+          </div> <!-- form-group -->
+        </form>
+      </fieldset>
+     </div> <!-- container -->
+  </section> <!-- logging_page -->
+
+  <section id="format_page" style="display:none">
+    <div class="container-fluid">
+      <fieldset>
+        <legend>Output Format</legend>
+        <form class="form-inline" method="POST">
+          <div class="form-group">
+            <label for="long">Long Format</label>
+            <input name="long" type="checkbox" class="form-control" value="--long"></input>
+          </div>
+          <div class="form-group">
+            <label for="format">Display Format</label>
+            <select name="format" class="form-control">
+              <option value="-f table"">Table (Default)</option>
+              <option value="-f csv">CSV (-f csv)</option>
+              <option value="-f json">JSON (-f json)</option>
+              <option value="-f html">HTML (-f html)</option>
+              <option value="-f yaml">YAML (-f yaml)</option>
+              <option value="-f shell">Shell (-f shell)</option>
+            </select>
+          </div> <!-- form-group -->
+          <div class="form-group">
+            <label for="prefix">Shell Prefix</label>
+            <input name="prefix" class="form-control" value=""></input>
+          </div> <!-- form-group -->
+          <div class="form-group">
+            <button class="btn btn-success save">Save</button>
+            <button class="btn btn-warning cancel" style="float:right">Cancel</button>
+          </div> <!-- col -->
+        </form>
+      </fieldset>
+     </div> <!-- container -->
+  </section> <!-- format_page -->
+
+  <section id="explorer_page" style="display:none">
+    <div class="container-fluid">
+      <fieldset>
+        <legend>OpenStackClient</legend>
+        <form class="form-inline" method="POST">
+          <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="#">Beginner</a></li>
+            <li role="presentation"><a href="#">Intermediate</a></li>
+            <li role="presentation"><a href="#">Expert</a></li>
+          </ul>
+          <h1>Command Line Options</h1>
+          <div class="row" style="margin-top:40px">
+            <div class="col-lg-12">
+              <div id="msg" class="alert" style="display:none">
+              </div> <! -- #msg -->
+            </div> <!-- col -->
+            <div class="col-lg-12">
+              <button class="btn authentication">Authentication</button>
+              <button class="btn logging">Logging</button>
+    
+              <div class="form-group">
+                <label for="command"></label>
+                <select name="command" class="form-control">
+                <option value="">Command</option>
+                <optgroup label="Compute">
+                  <option>server</option>
+                  <option>image</option>
+                  <option>ip fixed</option>
+                  <option>ip floating</option>
+                </optgroup>
+                <optgroup label="Storage">
+                  <option>volume</option>
+                  <option>snapshot</option>
+                  <option>object</option>
+                </optgroup>
+                <optgroup label="Identity">
+                  <option>user</option>
+                  <option>role</option>
+                  <option>keypair</option>
+                  <option>security group</option>
+                  <option>project</option>
+                </optgroup>
+                </select>
+              </div> <!-- form-group -->
+    
+              <div class="form-group">
+                <label for="action"></label>
+                <select name="action" class="form-control">
+                  <option value="">Action</option>
+                  <option>list</option>
+                  <option>show</option>
+                  <option>create</option>
+                  <option>delete</option>
+                  <option>set</option>
+                  <option>...</option>
+                </select>
+              </div> <!-- form-group -->
+            <button class="btn format">Output Format</button>
+            <button class="btn btn-success run">Run</button>
+          </div> <!-- col -->
+        </div> <!-- row -->
+      </fieldset>
+
+      <fieldset id="explorer_console" style="display:none">
+        <legend>Console</legend>
+
+      <h3>Command</h3>
+<!--
+<pre>
+$ openstack --os-username=admin --os-password=passwd --os-project-name=admin --os-auth-url=http://localhost:5000/ <b>image list</b>
+</pre>
+-->
+<pre>
+$ openstack --os-username=admin --os-password=passwd --os-project-name=admin --os-auth-url=http://localhost:5000/  <b>user list --long --format csv</b> </pre>
+      <h3>Output  <small><button class="btn btn-warning">Download</button></h3>
+
+<pre>
+"ID","Name","Project","Email","Enabled"
+"4028a042168545e3aab97b2e8e3aa060","explorer","","",True
+"554209509f5b47e286e0379bcbf66762","admin","","",True
+"59ac0457a80d449c9dac3b66848f2b5b","demo","","demo@example.com",True
+"8aab962698f9460692efb8d3aab35886","verify_tempest_config-1304647972","verify_tempest_config-2026546166","verify_tempest_config-1955600035@example.com",True
+"8b602467cd9045888687987067cbd3f6","alt_demo","","alt_demo@example.com",True
+"a134c3b33e94475fb5398643dd816053","glance","","",True
+"c68c68579ec0437094a14dfbc4728224","cinder","","",True
+"e65bd34ca85a429ea5c56bf980f77d67","nova","","",True
+</pre>
+<!--
+<pre>
++--------------------------------------+---------------------------------+
+| ID                                   | Name                            |
++--------------------------------------+---------------------------------+
+| 9e342b3b-8282-4652-9063-fdd30503b03a | cirros-0.3.2-x86_64-uec         |
+| 66954ae5-8d1e-4b4c-acff-f1e03b1bc22c | cirros-0.3.2-x86_64-uec-ramdisk |
+| a9948bb8-90e3-4b50-b499-d5880972d455 | cirros-0.3.2-x86_64-uec-kernel  |
++--------------------------------------+---------------------------------+
+</pre>
+-->
+      </fieldset>
+    </div> <!-- container -->
+  </section>
+
+   <footer>
+     <div class="container">
+       <div class="row text-center">
+         <ul class="list-inline">
+           <li><a target="_blank" href="#">View this code</a></li>
+           <li><a target="_blank" href="http://docs.openstack.org/developer/python-openstackclient/">OpenStackClient (OSC) Docs</a></li>
+         </ul>
+       </div> <!-- row -->
+       <div class="row text-center copyright">
+          OS Explorer is developed by <a href="http://ronaldbradford.com/">Ronald Bradford</a>. 
+          Created in 2015.
+       </div> <!-- row -->
+     </div> <!-- container -->
+   </footer>
+</body>
+
+<script type="text/javascript" src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.validation/1.13.1/jquery.validate.min.js"></script>
+<script type="text/javascript">
+
+// General Functions
+function debugging(o) {
+  console.log(JSON.stringify(o));
+}
+
+function show_explorer_page(el) {
+  $(el).closest('section').hide();
+  $('#explorer_page').show();
+  //console.log(JSON.stringify(os));
+  return false;
+}
+
+var os = new Object();
+
+// Navigation/Display Sections
+$('.authentication').click(function() {
+  console.log(".authentication");
+  $('#explorer_page').hide();
+  $('#authentication_page').show();
+  return false;
+});
+
+$('.logging').click(function() {
+  console.log(".authentication");
+  $('#explorer_page').hide();
+  $('#logging_page').show();
+  return false;
+});
+
+$('.format').click(function() {
+  console.log(".format");
+  $('#explorer_page').hide();
+  $('#format_page').show();
+  return false;
+});
+
+$('.explorer').click(function() {
+  console.log(".explorer");
+  $('#explorer_page').show();
+  $('#authentication_page').hide();
+  return false;
+});
+
+// Form Button Management
+$('#authentication_page .save').click(function() {
+  console.log("#authentication_page.save");
+  $('#authentication_console').show();
+  
+  authentication = new Object();
+  authentication['os-username'] = $('#authentication_page input[name=os-username]').val();
+  authentication['os-password'] = $('#authentication_page input[name=os-password]').val();
+  authentication['os-project-name'] = $('#authentication_page input[name=os-project-name]').val();
+  authentication['os-auth-url'] = $('#authentication_page input[name=os-auth-url]').val();
+  os['authentication'] = authentication;
+
+  debugging(os);
+  show_explorer_page($(this));
+  return false;
+});
+
+$('#logging_page .save').click(function() {
+  console.log("#logging_page.save");
+  $('#explorer_console').show();
+
+  logging = new Object();
+  logging['logging'] = $('#logging_page select[name=logging]').val();
+  os['logging'] = logging;
+
+  debugging(os);
+  show_explorer_page($(this));
+  return false;
+});
+
+$('#format_page .save').click(function() {
+  console.log("#format_page.save");
+
+  format = new Object();
+  format['format'] = $('#format_page select[name=format]').val();
+  format['prefix'] = $('#format_page input[name=prefix]').val();
+  format['long'] = $('#format_page input[name=long]:checked').val();
+  os['format'] = format;
+
+  debugging(os);
+  show_explorer_page($(this));
+  return false;
+});
+
+$('.cancel').click(function() {
+  console.log(".cancel");
+  show_explorer_page($(this));
+  return false;
+});
+
+$('#explorer_page .run').click(function() {
+  console.log("#explorer_page.run");
+  cli = 'openstack';
+  command = $('#explorer_page select[name=command]').val();
+  action = $('#explorer_page select[name=action]').val();
+  
+  msg='';
+  if (command == '') {
+    msg = 'You need to specify a command.';
+  }
+  if (action == '') {
+    msg += 'You need to specify an action.';
+  }
+  if (msg != '') {
+    $('#msg').addClass('alert-warning').show().text(msg);
+    return false;
+  }
+
+  execute = cli;
+  for (var key in os.authentication) {
+    if (os.authentication[key]) {
+      execute += " --" + key + "=" + os.authentication[key];
+    }
+  }
+  for (var key in os.logging) {
+    if (os.logging[key]) {
+      execute += " " + os.logging[key];
+    }
+  }
+  execute += " " + command + " " + action;
+  for (var key in os.format) {
+    if (os.format[key]) {
+      execute += " " + os.format[key];
+    }
+  }
+
+  console.log("Executing " + execute);
+  $('#explorer_console').show();
+  return false;
+});
+
+// Page Initialization
+$(document).ready(function() {
+  $('#explorer_page').show();
+}); //document.ready
+
+</script>
+</html>
