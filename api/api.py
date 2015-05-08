@@ -2,6 +2,7 @@
 from flask import Flask, jsonify, request, abort
 from subprocess import Popen, PIPE
 import sys
+from crossdomain import crossdomain
 
 # Define the web container
 api = Flask(__name__)
@@ -9,11 +10,13 @@ api.config['SERVER_NAME'] = 'localhost:4242';
 
 # Ensure the API has endpoint discovery
 @api.route('/')
+@crossdomain(origin='*')
 def index():
     return jsonify({'apis' : [ '/api/OSeX' ]})
 
 # Our primary API endpoint
 @api.route('/api/OSeX', methods=['POST'])
+@crossdomain(origin='*')
 def execute():
     # We only accept POST with a JSON data payload
     if not request.json:
