@@ -274,7 +274,7 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
 </pre>
 -->
       </fieldset>
-     </div> <!-- container -->
+    </div> <!-- container -->
   </section> <!-- login_page -->
 
   <section id="logging_page" style="display:none">
@@ -331,7 +331,7 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
           </div> <!-- col -->
         </form>
       </fieldset>
-     </div> <!-- container -->
+    </div> <!-- container -->
   </section> <!-- format_page -->
 
   <section id="explorer_page" style="display:none">
@@ -573,7 +573,6 @@ $('.cancel').click(function() {
 
 $('#explorer_page .run').click(function() {
   console.log('#explorer_page.run');
-  cli = 'openstack';
   command = $('#explorer_page select[name=command]').val();
   action = $('#explorer_page select[name=action]').val();
   
@@ -589,27 +588,49 @@ $('#explorer_page .run').click(function() {
     return false;
   }
 
-  execute = cli;
+  cli = 'openstack';
+  args='';
+  // Add the authentication options as --[name]=value 
   for (var key in os.authentication) {
     if (os.authentication[key]) {
-      execute += " --" + key + "=" + os.authentication[key];
-    }
-  }
-  for (var key in os.logging) {
-    if (os.logging[key]) {
-      execute += " " + os.logging[key];
-    }
-  }
-  execute += " " + command + " " + action;
-  for (var key in os.format) {
-    if (os.format[key]) {
-      execute += " " + os.format[key];
+      args += " --" + key + "=" + os.authentication[key];
     }
   }
 
+  // Add the logging options as value
+  for (var key in os.logging) {
+    if (os.logging[key]) {
+      args += " " + os.logging[key];
+    }
+  }
+
+  // Add in the command and action
+  args += " " + command + " " + action;
+
+  // Add the formatting options 
+  for (var key in os.format) {
+    if (os.format[key]) {
+      args += " " + os.format[key];
+    }
+  }
+
+  $('#explorer_console').show();
+  execute = cli + " " + execute;
   $('#execute').text(execute);
   console.log('Executing ' + execute);
-  $('#explorer_console').show();
+
+  data = {"command" : cli, "args" : args}
+  $.ajax({
+    method: "POST",
+    url: "http://localhost:4242/api/OSeX",
+    data: data, 
+  }).fail(function() {
+    $('#msg').addClass('alert-warning').show().text("Error executing the command");
+    alert("An Error");
+  }).done(function() {
+    $('#msg').addClass('alert-success').show().text("Successfully ran command");
+  });
+
   return false;
 });
 
