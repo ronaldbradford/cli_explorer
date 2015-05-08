@@ -26,7 +26,7 @@
 <body>
 
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation"> <!-- Navigation -->
-    <div class="container">
+    <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -35,7 +35,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.htm">OS Explorer</a>
+        <a class="navbar-brand" href="index.htm">CLI Explorer</a>
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -50,10 +50,30 @@
                <li role="presentation" class="disabled"> <a href="#">Glance Client</a> </li>
              </ul>
           </li>
+          <li role="presentation"> <a data-toggle="modal" data-target="#help_page" href="#">Help</a> </li>
         </ul>
       </div> <!-- /.navbar-collapse -->
     </div> <!-- /.container -->
   </nav>
+
+  <div class="modal fade bs-example-modal-lg" id="help_page" tabindex="-1" role="dialog" aria-labelledby="helpLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="helpLabel">OpenStack CLI Explorer Help</h4>
+        </div>
+        <div class="modal-body">
+          <p>
+          This tool is designed to assist users in becoming familiar with the Command Line Interface (CLI) tools that exist with OpenStack.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <section id="authentication_page" style="display:none">
     <div class="container-fluid">
@@ -440,7 +460,7 @@ $ openstack --os-username=admin --os-password=passwd --os-project-name=admin --o
          </ul>
        </div> <!-- row -->
        <div class="row text-center copyright">
-          OS Explorer is developed by <a href="http://ronaldbradford.com/">Ronald Bradford</a>. 
+          CLI Explorer is developed by <a href="http://ronaldbradford.com/">Ronald Bradford</a>. 
           Created in 2015.
        </div> <!-- row -->
      </div> <!-- container -->
