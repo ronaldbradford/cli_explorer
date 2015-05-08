@@ -20,13 +20,13 @@ def index():
 def execute():
     # We only accept POST with a JSON data payload
     if not request.json:
-      return jsonify({'error': 'Not a valid JSON request'}), 200
+        return jsonify({'error': 'Not a valid JSON request'}), 200
 
     # This request has two required parameters
     required = [ 'command', 'args' ]
     missing=[field for field in required if field not in request.json]
     if missing:
-      return jsonify({'error': str(missing)+ ' are required parameters'}), 200
+        return jsonify({'error': str(missing)+ ' are required parameters'}), 200
       
     # Obtain the value of passed parameters
     command = request.json['command']
@@ -35,14 +35,14 @@ def execute():
     # To further hobble this generic execute OS command, we retrict the commands
     valid_commands = [ 'date', 'openstack', 'nova' ]
     if command not in valid_commands:
-      return jsonify({'error': 'The supplied command is invalid'}), 200
+        return jsonify({'error': 'The supplied command is invalid'}), 200
 
 
     # Build the python specific execute command
     execute = [command]
     if (args): 
-      args.split(' ')
-      execute.append(args)
+        args.split(' ')
+        execute.append(args)
     api.logger.debug(execute)
 
     # Execute the command
