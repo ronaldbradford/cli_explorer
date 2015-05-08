@@ -120,7 +120,7 @@
         <h3>Command</h3>
         <pre class="execute"></pre>
         <h3>Output</h3>
-<div class="alert alert-danger">This is mock output</div>
+<div class="alert alert-warning">This is mock output</div>
         <pre class="console">
 {
     "version": {
@@ -362,7 +362,9 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
           <h1>Command Line Options</h1>
           <div class="row" style="margin-top:40px">
             <div class="col-md-12">
-              <div id="msg" class="alert" style="display:none">
+              <div id="msg" class="alert alert-dismissible" role="alert" style="display:none">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <span id="msg-text"></span>
               </div> <! -- #msg -->
             </div> <!-- col -->
             <div class="col-md-12">
@@ -423,7 +425,7 @@ $ openstack --os-username=admin --os-password=passwd --os-project-name=admin --o
 -->
 <pre id="execute"></pre>
       <h3>Output  <small><button class="btn btn-warning">Download</button></h3>
-<div class="alert alert-danger">This is mock output</div>
+<div class="alert alert-warning">This is mock output</div>
 
 <pre>
 "ID","Name","Project","Email","Enabled"
@@ -455,7 +457,7 @@ $ openstack --os-username=admin --os-password=passwd --os-project-name=admin --o
      <div class="container">
        <div class="row text-center">
          <ul class="list-inline">
-           <li><a target="_blank" href="#">View this code</a></li>
+           <li><a target="_blank" href="https://github.com/ronaldbradford/cli_explorer">View this code</a></li>
            <li><a target="_blank" href="http://docs.openstack.org/developer/python-openstackclient/">OpenStackClient (OSC) Docs</a></li>
          </ul>
        </div> <!-- row -->
@@ -604,7 +606,8 @@ $('#explorer_page .run').click(function() {
     msg += 'You need to specify an action.';
   }
   if (msg != '') {
-    $('#msg').addClass('alert-warning').show().text(msg);
+    $('#msg-text').text(msg);
+    $('#msg').addClass('alert-warning').show();
     return false;
   }
 
@@ -639,16 +642,18 @@ $('#explorer_page .run').click(function() {
   $('#execute').text(execute);
   console.log('Executing ' + execute);
 
+
   data = {"command" : cli, "args" : args}
   $.ajax({
     method: "POST",
     url: "http://localhost:4242/api/OSeX",
     data: data, 
   }).fail(function() {
-    $('#msg').addClass('alert-warning').show().text("Error executing the command");
-    alert("An Error");
+    $('#msg-text').text("Error executing the command with web API.");
+    $('#msg').removeClass('alert-warning').removeClass('alert-success').addClass('alert-danger').show();
   }).done(function() {
-    $('#msg').addClass('alert-success').show().text("Successfully ran command");
+    $('#msg-text').text("Successfully ran command.");
+    $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show();
   });
 
   return false;
