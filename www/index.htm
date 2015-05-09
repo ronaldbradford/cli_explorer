@@ -496,6 +496,8 @@ $('#explorer_page .run').click(function() {
       else {
         $('#msg-text').text('Successfully ran command.');
         $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show();
+        $('#stdout').text(data.stdout);
+        $('#stderr').text(data.stderr);
       }
     },
     error: function(jqXhr, textStatus, errorThrown ){
