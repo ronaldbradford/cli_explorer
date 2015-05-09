@@ -153,145 +153,6 @@
 <div class="alert alert-danger">This is mock output</div>
         <pre>
 $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantName": "<b>admin</b>", "passwordCredentials": { "username": "<b>admin</b>", "password": "<b>passwd/</b>" } } }' <b>http://localhost:5000/v2.0/</b>tokens | python -m json.tool </pre>
-<h3>Output</h3>
-<div class="alert alert-danger">This is mock output</div>
-<pre>
-{
-    "access": {
-        "metadata": {
-            "is_admin": 0,
-            "roles": [
-                "37f3e04433d44863bfd6d40b0d7a56df"
-            ]
-        },
-        "serviceCatalog": [
-            {
-                "endpoints": [
-                    {
-                        "adminURL": "http://192.168.42.102:8774/v2/8be731da841e47a19c35504de266177b",
-                        "id": "7d2fb65de0724da09625843b6883c88c",
-                        "internalURL": "http://192.168.42.102:8774/v2/8be731da841e47a19c35504de266177b",
-                        "publicURL": "http://192.168.42.102:8774/v2/8be731da841e47a19c35504de266177b",
-                        "region": "RegionOne"
-                    }
-                ],
-                "endpoints_links": [],
-                "name": "nova",
-                "type": "compute"
-            },
-            {
-                "endpoints": [
-                    {
-                        "adminURL": "http://192.168.42.102:8776/v2/8be731da841e47a19c35504de266177b",
-                        "id": "182ba3e11f5a4fd19f3974f1bba25574",
-                        "internalURL": "http://192.168.42.102:8776/v2/8be731da841e47a19c35504de266177b",
-                        "publicURL": "http://192.168.42.102:8776/v2/8be731da841e47a19c35504de266177b",
-                        "region": "RegionOne"
-                    }
-                ],
-                "endpoints_links": [],
-                "name": "cinderv2",
-                "type": "volumev2"
-            },
-            {
-                "endpoints": [
-                    {
-                        "adminURL": "http://192.168.42.102:9292",
-                        "id": "3df86e53544949e19047fe6e10c6986c",
-                        "internalURL": "http://192.168.42.102:9292",
-                        "publicURL": "http://192.168.42.102:9292",
-                        "region": "RegionOne"
-                    }
-                ],
-                "endpoints_links": [],
-                "name": "glance",
-                "type": "image"
-            },
-            {
-                "endpoints": [
-                    {
-                        "adminURL": "http://192.168.42.102:8776/v1/8be731da841e47a19c35504de266177b",
-                        "id": "650b47af4bfe4d84a710202b9bcf1f90",
-                        "internalURL": "http://192.168.42.102:8776/v1/8be731da841e47a19c35504de266177b",
-                        "publicURL": "http://192.168.42.102:8776/v1/8be731da841e47a19c35504de266177b",
-                        "region": "RegionOne"
-                    }
-                ],
-                "endpoints_links": [],
-                "name": "cinder",
-                "type": "volume"
-            },
-            {
-                "endpoints": [
-                    {
-                        "adminURL": "http://192.168.42.102:8773/",
-                        "id": "005699ca2bc048af9698a941260f4d81",
-                        "internalURL": "http://192.168.42.102:8773/",
-                        "publicURL": "http://192.168.42.102:8773/",
-                        "region": "RegionOne"
-                    }
-                ],
-                "endpoints_links": [],
-                "name": "ec2",
-                "type": "ec2"
-            },
-            {
-                "endpoints": [
-                    {
-                        "adminURL": "http://192.168.42.102:8774/v2.1/8be731da841e47a19c35504de266177b",
-                        "id": "5743e9040e8944ce9d3c950cfb23d67f",
-                        "internalURL": "http://192.168.42.102:8774/v2.1/8be731da841e47a19c35504de266177b",
-                        "publicURL": "http://192.168.42.102:8774/v2.1/8be731da841e47a19c35504de266177b",
-                        "region": "RegionOne"
-                    }
-                ],
-                "endpoints_links": [],
-                "name": "novav21",
-                "type": "computev21"
-            },
-            {
-                "endpoints": [
-                    {
-                        "adminURL": "http://192.168.42.102:35357/v2.0",
-                        "id": "548265871ddb43cb886909ff9b6e22cd",
-                        "internalURL": "http://192.168.42.102:5000/v2.0",
-                        "publicURL": "http://192.168.42.102:5000/v2.0",
-                        "region": "RegionOne"
-                    }
-                ],
-                "endpoints_links": [],
-                "name": "keystone",
-                "type": "identity"
-            }
-        ],
-        "token": {
-            "audit_ids": [
-                "P8ySdJ5OQr2n1UIXss5MIQ"
-            ],
-            "expires": "2015-05-06T18:11:15Z",
-            "id": "6ddb599a0ec440db94c72ac4612c107a",
-            "issued_at": "2015-05-06T17:11:15.029333",
-            "tenant": {
-                "description": null,
-                "enabled": true,
-                "id": "8be731da841e47a19c35504de266177b",
-                "name": "admin"
-            }
-        },
-        "user": {
-            "id": "554209509f5b47e286e0379bcbf66762",
-            "name": "admin",
-            "roles": [
-                {
-                    "name": "admin"
-                }
-            ],
-            "roles_links": [],
-            "username": "admin"
-        }
-    }
-}
-</pre>
 -->
       </fieldset>
     </div> <!-- container -->
@@ -419,9 +280,9 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
         <h3>Command</h3>
         <pre id="execute"></pre>
         <div id="explorer_response" style="display:none">
-          <h3>Output  <small><button class="btn btn-warning">Download</button></h3>
+          <h3>Output (stdout)  <small><button class="btn btn-warning">Download</button></h3>
           <pre id="stdout"></pre>
-          <h3>Errors</h3>
+          <h3>Errors (stderr)</h3>
           <pre id="stderr"></pre>
         </div>
       </fieldset>
@@ -570,6 +431,7 @@ $('.cancel').click(function() {
 
 $('#explorer_page .run').click(function() {
   console.log('#explorer_page.run');
+  $('#msg').hide();
   command = $('#explorer_page select[name=command]').val();
   action = $('#explorer_page select[name=action]').val();
   
@@ -618,11 +480,10 @@ $('#explorer_page .run').click(function() {
   console.log('Executing ' + execute);
 
   url = 'http://' + window.location.hostname + ':4242/api/OSeX';
-  data = JSON.stringify({"command" : cli, "args" : args});
+  data = "command=" + cli +  "&args=" + args;
   console.log(url + " " + data);
   $.ajax({
     method: 'POST',
-    // contentType: 'application/json',
     url:  url,
     data: data, 
     dataType: 'json', // Response
