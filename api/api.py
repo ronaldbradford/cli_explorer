@@ -39,8 +39,8 @@ def execute():
     #    return jsonify({'error': str(missing)+ ' are required parameters'}), 200
       
     # Obtain the value of passed parameters
-    command = request.form['command']
-    args = request.form['args']
+    command = request.form['command'].strip()
+    args = request.form['args'].strip()
 
     # To further hobble this generic execute OS command, we retrict the commands
     valid_commands = [ 'date', 'openstack', 'nova' ]
@@ -51,10 +51,9 @@ def execute():
     # Build the python specific execute command
     execute = [command]
     if (args): 
-        args.split(' ')
-        execute.append(args)
+        execute += args.split(' ')
 
-    api.logger.info(execute)
+    api.logger.info('Executing ' + str(execute))
 
     # Execute the command
     p = Popen(execute, stdout=PIPE, stderr=PIPE)
@@ -67,4 +66,4 @@ def execute():
     return jsonify({'execute' : command + " " + args, 'status' : rc, 'stdout' : stdout, 'stderr' : stderr}), 200
 
 if __name__ == '__main__':
-    api.run(host=ip)
+    api.run(host=ip, debug=True)
