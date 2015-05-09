@@ -271,6 +271,7 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
               </div> <!-- form-group -->
             <button class="btn format">Output Format</button>
             <button class="btn btn-success run">Run</button>
+            <button class="btn btn-warning clear" style="float:right">Clear</button>
           </div> <!-- col -->
         </div> <!-- row -->
       </fieldset>
@@ -347,6 +348,17 @@ $('.format').click(function() {
   console.log('.format');
   $('#explorer_page').hide();
   $('#format_page').show();
+  return false;
+});
+
+$('.clear').click(function() {
+  console.log('.clear');
+  $('#msg').text('').hide();
+  $('#stdout').text('');
+  $('#stderr').text('');
+  $('#explorer_console').hide();
+  $('#explorer_page select[name=command]').val('');
+  $('#explorer_page select[name=action]').val('');
   return false;
 });
 
