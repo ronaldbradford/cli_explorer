@@ -479,7 +479,7 @@ $('#explorer_page .run').click(function() {
   $('#execute').text(execute);
   console.log('Executing ' + execute);
 
-  url = 'http://' + window.location.hostname + ':4242/api/OSeX';
+  url = 'http://' + window.location.hostname + ':4242/api/cli';
   data = "command=" + cli +  "&args=" + args;
   console.log(url + " " + data);
   $.ajax({
