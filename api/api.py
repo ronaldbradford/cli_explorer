@@ -3,10 +3,23 @@ from flask import Flask, jsonify, request, abort
 from subprocess import Popen, PIPE
 import sys
 from crossdomain import crossdomain
+import ConfigParser
+
+
+cnf = 'cli_explorer.cnf'
+config = ConfigParser.ConfigParser()
+if not config.read(cnf):
+  print("Config file '%s' not found" % cnf)
+  exit()
+
+config.sections()
+section='api'
+domain = config.get(section,'domain')
+ip = config.get(section,'ip')
 
 # Define the web container
 api = Flask(__name__)
-api.config['SERVER_NAME'] = 'cli_explorer.ronaldbradford.com:4242';
+api.config['SERVER_NAME'] = domain
 
 # Ensure the API has endpoint discovery
 @api.route('/')
@@ -54,4 +67,4 @@ def execute():
     return jsonify({'execute' : command + " " + args, 'status' : rc, 'stdout' : stdout, 'stderr' : stderr}), 200
 
 if __name__ == '__main__':
-    api.run(host='107.170.3.28')
+    api.run(host=ip)
