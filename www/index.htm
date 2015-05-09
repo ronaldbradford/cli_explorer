@@ -416,39 +416,14 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
 
       <fieldset id="explorer_console" style="display:none">
         <legend>Console</legend>
-
-      <h3>Command</h3>
-<!--
-$ openstack --os-username=admin --os-password=passwd --os-project-name=admin --os-auth-url=http://localhost:5000/ <b>image list</b>
-</pre>
-$ openstack --os-username=admin --os-password=passwd --os-project-name=admin --os-auth-url=http://localhost:5000/  <b>user list --long --format csv</b> </pre>
--->
-<pre id="execute"></pre>
-      <h3>Output  <small><button class="btn btn-warning">Download</button></h3>
-<div class="alert alert-warning">This is mock output</div>
-
-<pre>
-"ID","Name","Project","Email","Enabled"
-"4028a042168545e3aab97b2e8e3aa060","explorer","","",True
-"554209509f5b47e286e0379bcbf66762","admin","","",True
-"59ac0457a80d449c9dac3b66848f2b5b","demo","","demo@example.com",True
-"8aab962698f9460692efb8d3aab35886","verify_tempest_config-1304647972","verify_tempest_config-2026546166","verify_tempest_config-1955600035@example.com",True
-"8b602467cd9045888687987067cbd3f6","alt_demo","","alt_demo@example.com",True
-"a134c3b33e94475fb5398643dd816053","glance","","",True
-"c68c68579ec0437094a14dfbc4728224","cinder","","",True
-"e65bd34ca85a429ea5c56bf980f77d67","nova","","",True
-</pre>
-<!--
-<pre>
-+--------------------------------------+---------------------------------+
-| ID                                   | Name                            |
-+--------------------------------------+---------------------------------+
-| 9e342b3b-8282-4652-9063-fdd30503b03a | cirros-0.3.2-x86_64-uec         |
-| 66954ae5-8d1e-4b4c-acff-f1e03b1bc22c | cirros-0.3.2-x86_64-uec-ramdisk |
-| a9948bb8-90e3-4b50-b499-d5880972d455 | cirros-0.3.2-x86_64-uec-kernel  |
-+--------------------------------------+---------------------------------+
-</pre>
--->
+        <h3>Command</h3>
+        <pre id="execute"></pre>
+        <div id="explorer_response" style="display:none">
+          <h3>Output  <small><button class="btn btn-warning">Download</button></h3>
+          <pre id="stdout"></pre>
+          <h3>Errors</h3>
+          <pre id="stderr"></pre>
+        </div>
       </fieldset>
     </div> <!-- container -->
   </section>
@@ -638,24 +613,38 @@ $('#explorer_page .run').click(function() {
   }
 
   $('#explorer_console').show();
-  execute = cli + " " + execute;
+  execute = cli + " " + args;
   $('#execute').text(execute);
   console.log('Executing ' + execute);
 
-
-  data = {"command" : cli, "args" : args}
+  url = 'http://' + window.location.hostname + ':4242/api/OSeX';
+  data = JSON.stringify({"command" : cli, "args" : args});
+  console.log(url + " " + data);
   $.ajax({
-    method: "POST",
-    url: "http://localhost:4242/api/OSeX",
+    method: 'POST',
+    // contentType: 'application/json',
+    url:  url,
     data: data, 
-  }).fail(function() {
-    $('#msg-text').text("Error executing the command with web API.");
-    $('#msg').removeClass('alert-warning').removeClass('alert-success').addClass('alert-danger').show();
-  }).done(function() {
-    $('#msg-text').text("Successfully ran command.");
-    $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show();
+    dataType: 'json', // Response
+    success: function(data, textStatus, jQxhr){
+      if (data && data.error) {
+        console.log(data.error);
+        $('#msg-text').text(data.error);
+        $('#msg').removeClass('alert-warning').removeClass('alert-success').addClass('alert-danger').show();
+      }
+      else {
+        $('#msg-text').text('Successfully ran command.');
+        $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show();
+      }
+    },
+    error: function(jqXhr, textStatus, errorThrown ){
+      $('#msg-text').text('Error executing the command with web API.');
+      $('#msg').removeClass('alert-warning').removeClass('alert-success').addClass('alert-danger').show();
+      console.log("Error executing API call");
+    }
   });
 
+  $('#explorer_response').show();
   return false;
 });
 
