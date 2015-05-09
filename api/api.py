@@ -25,10 +25,10 @@ api.config['SERVER_NAME'] = domain
 @api.route('/')
 @crossdomain(origin='*')
 def index():
-    return jsonify({'apis' : [ '/api/OSeX' ]})
+    return jsonify({'apis' : [ '/api/cli' ]})
 
 # Our primary API endpoint
-@api.route('/api/OSeX', methods=['POST'])
+@api.route('/api/cli', methods=['POST'])
 @crossdomain(origin='*')
 def execute():
     # We only accept POST with a form POST payload
