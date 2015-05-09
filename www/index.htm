@@ -231,7 +231,10 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
             <div class="col-md-12">
               <button class="btn authentication">Authentication</button>
               <button class="btn logging">Logging</button>
-    
+              <div class="form-group">
+                <label for="help">Help</label>
+                <input name="help" type="checkbox" class="form-control" value="help"></input>
+              </div>
               <div class="form-group">
                 <label for="command"></label>
                 <select name="command" class="form-control">
@@ -359,6 +362,7 @@ $('.clear').click(function() {
   $('#explorer_console').hide();
   $('#explorer_page select[name=command]').val('');
   $('#explorer_page select[name=action]').val('');
+  $('#explorer_page input[name=help]').prop('checked', false);
   return false;
 });
 
@@ -475,6 +479,10 @@ $('#explorer_page .run').click(function() {
       args += " " + os.logging[key];
     }
   }
+
+  help = $('#explorer_page input[name=help]:checked').val();
+  if (help)
+    args += " " + help;
 
   // Add in the command and action
   args += " " + command + " " + action;
