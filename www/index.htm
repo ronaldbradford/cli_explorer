@@ -295,6 +295,7 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
                   <option>console</option>
                   <option>ip fixed</option>
                   <option>ip floating</option>
+                  <option>container</option>
                 </optgroup>
                 <optgroup label="Compute Security">
                   <option>keypair</option>
@@ -330,6 +331,7 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
                   <option>endpoint</option>
                   <option>token</option>
                   <option>availability zone</option>
+                  <option>aggregate</option>
                   <option>limits</option>
                   <option>network</option>
                   <option>service</option>
@@ -350,6 +352,7 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
                     <option>unset</option>
                     <option>add</option>
                     <option>remove</option>
+                    <option>save</option>
                   </optgroup>
                   <optgroup label="Unique">
                     <option value'log show'>log show (console)</option>
@@ -374,6 +377,8 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
                     <option value'unlock'>unlock (server)</option>
                     <option value'unpause'>unpause (server)</option>
                     <option value'unrescue'>unrescue (server)</option>
+                    <option value'add host'>add host (aggregate)</option>
+                    <option value'remove host'>remove host (aggregate)</option>
                   </optgroup>
                 </select>
               </div> <!-- form-group -->
