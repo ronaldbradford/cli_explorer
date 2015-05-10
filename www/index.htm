@@ -15,9 +15,9 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="styles.css"  rel="stylesheet" type="text/css">
+    <link href="m/c/bootstrap.min.css" rel="stylesheet">
+    <link href="m/c/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="m/c/styles.css"  rel="stylesheet" type="text/css">
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -337,6 +337,8 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
         <h3>Command</h3>
         <pre id="execute"></pre>
         <div id="explorer_response" style="display:none">
+          <h3>Return code ($?)</h3>
+          <pre id="rc"></pre>
           <h3>Output (stdout)</h3> <!--  <small><button class="btn btn-warning">Download</button> -->
           <pre id="stdout"></pre>
           <h3>Errors (stderr)</h3>
@@ -367,8 +369,8 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
 <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.validation/1.13.1/jquery.validate.min.js"></script>
 -->
-<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="m/j/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="m/j/bootstrap.min.js"></script>
 <script type="text/javascript">
 
 // General Functions
@@ -410,6 +412,7 @@ $('.format').click(function() {
 $('.clear').click(function() {
   console.log('.clear');
   $('#msg').text('').hide();
+  $('#rc').text('');
   $('#stdout').text('');
   $('#stderr').text('');
   $('#explorer_console').hide();
@@ -561,6 +564,7 @@ $('#explorer_page .run').click(function() {
   execute = cli + " " + args;
 
   $('#execute').text(execute);
+  $('#rc').text('');
   $('#stdout').text('');
   $('#stderr').text('');
   $('#explorer_console').show();
@@ -583,6 +587,7 @@ $('#explorer_page .run').click(function() {
       else {
         $('#msg-text').text('Successfully ran command.');
         $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show().fadeOut(2000);
+        $('#rc').text(data.status);
         $('#stdout').text(data.stdout);
         $('#stderr').text(data.stderr);
       }
