@@ -65,8 +65,57 @@
         </div>
         <div class="modal-body">
           <p>
-          This tool is designed to assist users in becoming familiar with the Command Line Interface (CLI) tools that exist with OpenStack.
+            This tool is designed to assist users in becoming familiar with the various Command Line Interface (CLI) tools that exist with OpenStack. These tools include:
+            <ul>
+              <li>OpenStackClient (OSC), aka <code>openstack</code></li>
+              <li>Nova compute client, aka <code>nova</code></li>
+              <li>Glance image client, aka <code>glance</code></li>
+              <li>Keystone identity client, aka <code>keystone</code></li>
+            </ul>
           </p>
+          <h2>OpenStackClient</h2>
+          <p>
+          The <b>CLI Explorer</b> for the <b>OpenStackClient</b> helps the end user with the scope of syntax options by breaking these into several arbitary categories. These categories are used simply to help in education.  They also are organized in respect to the general order of arguments. Arguments are broken down into these categories.:
+          <ul>
+            <li>Authentication</li>
+            <li>Logging</li>
+            <li>Arguments</li>
+            <li>Output Format</li>
+            <li>Options</li>
+          </ul>
+           </p>
+          <pre>
+$ openstack [ --os-username=&lt;user> ...] [ -q | -v | ...] [help] image list [ -f json ...   ] 
+            [ Authentication          ] [ Logging      ] [               ] [ Output Format ] [Options]</pre>
+          <p>
+          </p>
+          <h3>Authentication</h3>
+          <p>
+            The <button class="btn">Authentication</button> view enables you to define the authentication needed for your <b>openstack</b> command.  
+            To assist in learning the wealth of authentication options, these are further broken down into Beginner and Expert options.
+          </p>
+          <p>The <b>Authentication</b> options also enable you to test the Public Identity URL, and the username,password and project values to ensure these are valid.</p>
+          </p>
+          <h3>Logging</h3>
+          <p>The <button class="btn">Logging</button> view enables you to define the verbosity of the output that is generated for the <b>openstack</b> command.
+          </p>
+          <h3>Arguments</h3>
+          <p>
+          This is the required <b>command</b> and <b>option</b> arguments used with <b>openstack</b>. It is possible with the use of system environment variables for authentication to require no other arguments to produce output.  This section also includes the optional <b>help</b> prefix that provides detailed help information including the various detailed options that can be used.
+          </p>
+          <h3>Output Format</h3>
+          <p>The <button class="btn">Output Format</button> view enables you to specify various formatting options that the <b>openstack</b> client can return.</p>
+          <h3>Options</h3>
+          <p>Finally, it is possible to specify addition options that are applicable to the specific <b>command</b> and <b>action</b> you have requested.</p>
+
+          <h2>Messages</h2>
+          <p>When running a constructed command you may receive the following messages. </p>
+          <div class="alert alert-success">Successfully ran command.</div>
+          <p>This message indicate you have run a command and that the Output (stdout) and Errors (stderr) will be present.</p>
+          <div class="alert alert-warning">You need to specify a command.You need to specify an action.</div>
+          <p>In order to use <button class="btn btn-success">Run</a> you need to specify a command and action in the select fields.</p>
+          <div class="alert alert-danger">Error executing the command with web API.</div>
+          <p>This message is because the Flask api.py web container that processes the request when you click <b>Run</b> is not running.</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -302,7 +351,7 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
          </ul>
        </div> <!-- row -->
        <div class="row text-center copyright">
-          CLI Explorer is developed by <a href="http://ronaldbradford.com/">Ronald Bradford</a>. 
+          <a target="_blank" href="http://cli_explorer.ronaldbradford.com">CLI Explorer</a> is developed by <a href="http://ronaldbradford.com/">Ronald Bradford</a>. 
           Created in 2015.
        </div> <!-- row -->
      </div> <!-- container -->
