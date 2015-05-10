@@ -289,22 +289,50 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
                 <select name="command" class="form-control">
                 <option value="">Command</option>
                 <optgroup label="Compute">
-                  <option>server</option>
                   <option>image</option>
+                  <option>flavor</option>
+                  <option>server</option>
+                  <option>console</option>
                   <option>ip fixed</option>
                   <option>ip floating</option>
                 </optgroup>
+                <optgroup label="Compute Security">
+                  <option>keypair</option>
+                  <option>security group</option>
+                  <option>security group rule</option>
+                  <option>ec2 credentials</option>
+                </optgroup>
                 <optgroup label="Storage">
                   <option>volume</option>
+                  <option>volume type</option>
                   <option>snapshot</option>
                   <option>object</option>
+                  <option>backup</option>
                 </optgroup>
                 <optgroup label="Identity">
                   <option>user</option>
                   <option>role</option>
-                  <option>keypair</option>
-                  <option>security group</option>
                   <option>project</option>
+                  <option>usage</option>
+                  <option>quota</option>
+                </optgroup>
+                <optgroup label="Information">
+                  <option>catalog</option>
+                  <option>command</option>
+                  <option>help</option>
+                  <option>complete</option>
+                  <option>extension</option>
+                  <option>module</option>
+                </optgroup>
+                <optgroup label="Infrastructure">
+                  <option>hypervisor</option>
+                  <option>host</option>
+                  <option>endpoint</option>
+                  <option>token</option>
+                  <option>availability zone</option>
+                  <option>limits</option>
+                  <option>network</option>
+                  <option>service</option>
                 </optgroup>
                 </select>
               </div> <!-- form-group -->
@@ -313,12 +341,40 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
                 <label for="action"></label>
                 <select name="action" class="form-control">
                   <option value="">Action</option>
-                  <option>list</option>
-                  <option>show</option>
-                  <option>create</option>
-                  <option>delete</option>
-                  <option>set</option>
-                  <option>...</option>
+                  <optgroup label="Common">
+                    <option>list</option>
+                    <option>show</option>
+                    <option>create</option>
+                    <option>delete</option>
+                    <option>set</option>
+                    <option>unset</option>
+                    <option>add</option>
+                    <option>remove</option>
+                  </optgroup>
+                  <optgroup label="Unique">
+                    <option value'log show'>log show (console)</option>
+                    <option value'url show'>url show (console)</option>
+                    <option value'pool list'>pool list (ip floating)</option>
+                    <option value'role list'>role list (user)</option>
+                    <option value'stats show'>stats show (hypervisor)</option>
+                    <option value'issue'>issue (token)</option>
+                    <option value'revoke'>revoke (token)</option>
+                    <option value'add security group'>add security group (server)</option>
+                    <option value'add volume'>add volume (server)</option>
+                    <option value'remove security group'>remove security group (server)</option>
+                    <option value'remove security group'>remove volume (server)</option>
+                    <option value'image create'>image create (server)</option>
+                    <option value'pause'>pause (server)</option>
+                    <option value'reboot'>reboot (server)</option>
+                    <option value'rebuild'>rebuild (server)</option>
+                    <option value'rescue'>rescue (server)</option>
+                    <option value'resize'>resize (server)</option>
+                    <option value'resume'>resume (server)</option>
+                    <option value'suspend'>suspend (server)</option>
+                    <option value'unlock'>unlock (server)</option>
+                    <option value'unpause'>unpause (server)</option>
+                    <option value'unrescue'>unrescue (server)</option>
+                  </optgroup>
                 </select>
               </div> <!-- form-group -->
             <button class="btn format">Output Format</button>
