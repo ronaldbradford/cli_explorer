@@ -348,7 +348,7 @@ $ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantNa
     </div> <!-- container -->
   </section>
 
-  <section>
+  <section id="banner">
     <div class="container">
       <div class="alert alert-info alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -518,6 +518,7 @@ $('.cancel').click(function() {
 $('#explorer_page .run').click(function() {
   console.log('#explorer_page.run');
   $('#msg').hide();
+  $('#banner').hide();
   command = $('#explorer_page select[name=command]').val();
   action = $('#explorer_page select[name=action]').val();
   
