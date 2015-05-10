@@ -2,11 +2,12 @@
 from flask import Flask, jsonify, request, abort
 from subprocess import Popen, PIPE
 import sys
+import os
 from crossdomain import crossdomain
 import ConfigParser
 
 
-cnf = 'cli_explorer.cnf'
+cnf = os.path.dirname(os.path.realpath(__file__)) + '/../etc/cli_explorer.cnf'
 config = ConfigParser.ConfigParser()
 if not config.read(cnf):
   print("Config file '%s' not found" % cnf)
