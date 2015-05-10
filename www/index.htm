@@ -113,7 +113,7 @@ $ openstack [ --os-username=&lt;user> ...] [ -q | -v | ...] [help] image list [ 
           <div class="alert alert-success">Successfully ran command.</div>
           <p>This message indicate you have run a command and that the Output (stdout) and Errors (stderr) will be present.</p>
           <div class="alert alert-warning">You need to specify a command.You need to specify an action.</div>
-          <p>In order to use <button class="btn btn-success">Run</a> you need to specify a command and action in the select fields.</p>
+          <p>In order to use <button class="btn btn-success">Run</button> you need to specify <select><option>Command</option></select> and <select><option>Action</option></select> values.</p>
           <div class="alert alert-danger">Error executing the command with web API.</div>
           <p>This message is because the Flask api.py web container that processes the request when you click <b>Run</b> is not running.</p>
         </div>
@@ -555,6 +555,8 @@ $('#explorer_page .run').click(function() {
   options = $('#explorer_page input[name=options]').val();
   if (options)
     args += " " + options;
+  
+  args = args.trim();
 
   execute = cli + " " + args;
 
