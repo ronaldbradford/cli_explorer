@@ -413,9 +413,10 @@ $('.clear').click(function() {
   $('#stdout').text('');
   $('#stderr').text('');
   $('#explorer_console').hide();
+  $('#explorer_page input[name=help]').prop('checked', false);
   $('#explorer_page select[name=command]').val('');
   $('#explorer_page select[name=action]').val('');
-  $('#explorer_page input[name=help]').prop('checked', false);
+  $('#explorer_page input[name=options]').val('');
   return false;
 });
 
