@@ -27,7 +27,6 @@ if not config.read(cnf):
   print("Config file '%s' not found" % cnf)
   exit()
 
-config.sections()
 section='api'
 domain = config.get(section,'domain')
 ip = config.get(section,'ip')
@@ -62,12 +61,8 @@ def execute():
     if command not in valid_commands:
         return jsonify({'error': 'The supplied command is invalid'}), 200
 
-
     # Build the python specific execute command
-    execute = [command]
-    if (args): 
-        execute += args.split(' ')
-
+    execute = [command] + ((args) and args.split(' '))
     api.logger.info('Executing ' + str(execute))
 
     # Execute the command
