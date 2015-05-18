@@ -420,25 +420,60 @@ function debugging(o) {
 }
 
 function show_explorer_page(el) {
-  $(el).closest('section').hide();
+  if (el) {
+    $(el).closest('section').hide();
+  }
+
+  if (os.explorer) {
+    $('#explorer_page select[name=command]').val(os.explorer['command']);
+    $('#explorer_page select[name=action]').val(os.explorer['action']);
+    $('#explorer_page input[name=help]').val(os.explorer['help']);
+    $('#explorer_page input[name=options]').val(os.explorer['options']);
+  }
   $('#explorer_page').show();
-  //console.log(JSON.stringify(os));
   return false;
 }
 
 var os = new Object();
 
+function load_parameters() {
+  console.log("Loading saved parameters");
+  if (typeof(Storage) !== "undefined") {
+    json = localStorage.getItem("cli_osc");
+    console.log("Retrieved parameters " + json);
+    os = JSON.parse(json);
+  }
+}
+
+
+function save_parameters() {
+  if (typeof(Storage) !== "undefined") {
+    localStorage.setItem("cli_osc", JSON.stringify(os));
+  }
+}
+
 // Navigation/Display Sections
 $('.authentication').click(function() {
   console.log('.authentication');
   $('#explorer_page').hide();
+  $('#console_page').hide();
+  if (os.authentication) {
+    $('#authentication_page input[name=os-username]').val(os.authentication['os-username']);
+    $('#authentication_page input[name=os-password]').val(os.authentication['os-password']);
+    $('#authentication_page input[name=os-project-name]').val(os.authentication['os-project-name']);
+    $('#authentication_page input[name=os-auth-url]').val(os.authentication['os-auth-url']);
+  }
   $('#authentication_page').show();
   return false;
 });
 
 $('.logging').click(function() {
-  console.log('.authentication');
+  console.log('.logging');
   $('#explorer_page').hide();
+  $('#console_page').hide();
+  if (os.logging) {
+    $('#logging_page select[name=logging]').val(os.logging['logging']);
+  }
   $('#logging_page').show();
   return false;
 });
@@ -446,6 +481,12 @@ $('.logging').click(function() {
 $('.format').click(function() {
   console.log('.format');
   $('#explorer_page').hide();
+  $('#console_page').hide();
+  if (os.format) {
+    $('#format_page select[name=format]').val(os.format['format']);
+    $('#format_page input[name=prefix]').val(os.format['prefix']);
+    $('#format_page input[name=long]').prop('checked', os.format['long']);
+  }
   $('#format_page').show();
   return false;
 });
@@ -648,11 +689,19 @@ $('#explorer_page .run').click(function() {
   options = $('#explorer_page input[name=options]').val();
   if (options)
     args += " " + options;
-  
-  args = args.trim();
 
+  args = args.trim();
+  
   execute = cli + " " + args;
 
+  explorer = new Object();
+  explorer['command'] = command;
+  explorer['action'] = action;
+  explorer['options'] = options;
+  explorer['help'] = help;
+  os['explorer'] = explorer;
+
+  save_parameters();
   $('#console_page').hide();
   $('#execute').text(execute);
   $('#rc').text('');
@@ -700,7 +749,8 @@ $('#explorer_page .run').click(function() {
 
 // Page Initialization
 $(document).ready(function() {
-  $('#explorer_page').show();
+  load_parameters();
+  show_explorer_page();
 }); //document.ready
 
 </script>
