@@ -167,42 +167,15 @@ $ openstack [ --os-username=&lt;user> ...] [ -q | -v | ...] [help] image list [ 
       <fieldset id="authentication_console" style="display:none">
         <legend>Console</legend>
         <h3>Command</h3>
-        <pre class="execute"></pre>
-        <h3>Output</h3>
-<div class="alert alert-warning">This is mock output</div>
-        <pre class="console">
-{
-    "version": {
-        "id": "v2.0",
-        "links": [
-            {
-                "href": "http://localhost:5000/v2.0/",
-                "rel": "self"
-            },
-            {
-                "href": "http://docs.openstack.org/",
-                "rel": "describedby",
-                "type": "text/html"
-            }
-        ],
-        "media-types": [
-            {
-                "base": "application/json",
-                "type": "application/vnd.openstack.identity-v2.0+json"
-            }
-        ],
-        "status": "stable",
-        "updated": "2014-04-17T00:00:00Z"
-    }
-}
-        </pre>
-
-<!--
-<h3>Command</h3>
-<div class="alert alert-danger">This is mock output</div>
-        <pre>
-$ curl -sL -H "Content-Type: application/json" -X POST -d '{ "auth": { "tenantName": "<b>admin</b>", "passwordCredentials": { "username": "<b>admin</b>", "password": "<b>passwd/</b>" } } }' <b>http://localhost:5000/v2.0/</b>tokens | python -m json.tool </pre>
--->
+        <pre id="execute2"></pre>
+        <div id="authentication_response" style="display:none">
+          <h3>Return code ($?)</h3>
+          <pre id="rc2"></pre>
+          <h3>Output (stdout)</h3> <!--  <small><button class="btn btn-warning">Download</button> -->
+          <pre id="stdout2"></pre>
+          <h3>Errors (stderr)</h3>
+          <pre id="stderr2"></pre>
+        </div>
       </fieldset>
     </div> <!-- container -->
   </section> <!-- login_page -->
@@ -506,6 +479,7 @@ $('.explorer').click(function() {
 // Form Button Management
 $('#authentication_page .save').click(function() {
   console.log('#authentication_page.save');
+  $('#banner').hide();
   
   authentication = new Object();
   authentication['os-username'] = $('#authentication_page input[name=os-username]').val();
@@ -521,24 +495,69 @@ $('#authentication_page .save').click(function() {
 
 $('#authentication_page .test').click(function() {
   console.log('#authentication_page.test');
-  $('#authentication_console').show();
+  $('#banner').hide();
   option = $(this).text();
   
-  url = $('#authentication_page input[name=os-auth-url]').val();
+  auth_url = $('#authentication_page input[name=os-auth-url]').val();
   //TODO IF url does not have trailing / add it
   username = $('#authentication_page input[name=os-username]').val();
   password = $('#authentication_page input[name=os-password]').val();
   project_name = $('#authentication_page input[name=os-project-name]').val();
 
+  cli = 'curl';
+  args ='-sL ';
   if (option == 'Test URL') {
-    execute = 'curl -sL ' + url + ' | python -m json.tool';
+    args += auth_url;
   } else if (option == 'Test Values') {
     execute  = 'curl -sL -H "Content-Type: application/json" -X POST';
     execute += ' -d \'{ "auth": { "tenantName": "' + project_name + '", "passwordCredentials": { "username": "' + username + '", "password": "' + password + '" } } }\'';
     execute += ' ' + url + 'tokens | python -m json.tool';
   }
 
-  $('#authentication_page .execute').text(execute);
+  execute = cli + " " + args;
+  console.log('Executing ' + execute);
+
+  $('#execute2').text(execute);
+  $('#rc2').text('');
+  $('#stdout2').text('');
+  $('#stderr2').text('');
+
+  url = 'http://' + window.location.hostname + ':4242/api/cli';
+  data = "command=" + cli +  "&args=" + args;
+  console.log(url + " " + data);
+  $('#msg-text').text('Running command');
+  $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show();
+
+  $.ajax({
+    method: 'POST',
+    url:  url,
+    data: data,
+    dataType: 'json', // Response
+    success: function(data, textStatus, jQxhr){
+      if (data && data.error) {
+        console.log(data.error);
+        $('#msg-text').text(data.error);
+        $('#msg').removeClass('alert-warning').removeClass('alert-success').addClass('alert-danger').show();
+      }
+      else {
+        $('#msg-text').text('Successfully ran command.');
+        $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show().fadeOut(2000);
+        $('#rc2').text(data.status);
+        $('#stdout2').text(data.stdout);
+        $('#stderr2').text(data.stderr);
+      }
+    },
+ 
+    error: function(jqXhr, textStatus, errorThrown ){
+      $('#msg-text').text('Error executing the command with web API.');
+      $('#msg').removeClass('alert-warning').removeClass('alert-success').addClass('alert-danger').show();
+      console.log("Error executing API call");
+    }
+  });
+
+  $('#authentication_response').show();
+  $('#authentication_console').show();
+
   return false;
 });
 
