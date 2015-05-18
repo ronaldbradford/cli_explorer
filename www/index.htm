@@ -510,8 +510,8 @@ $('#authentication_page .test').click(function() {
     args += auth_url;
   } else if (option == 'Test Values') {
     execute  = 'curl -sL -H "Content-Type: application/json" -X POST';
-    execute += ' -d \'{ "auth": { "tenantName": "' + project_name + '", "passwordCredentials": { "username": "' + username + '", "password": "' + password + '" } } }\'';
-    execute += ' ' + url + 'tokens | python -m json.tool';
+    args += ' -d \'{ "auth": { "tenantName": "' + project_name + '", "passwordCredentials": { "username": "' + username + '", "password": "' + password + '" } } }\'';
+    args += ' ' + auth_url + '/tokens';
   }
 
   execute = cli + " " + args;
@@ -543,6 +543,8 @@ $('#authentication_page .test').click(function() {
         $('#msg-text').text('Successfully ran command.');
         $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show().fadeOut(2000);
         $('#rc2').text(data.status);
+        formatted = JSON.stringify(data.stdout,null,4);
+        console.log(formatted);
         $('#stdout2').text(data.stdout);
         $('#stderr2').text(data.stderr);
       }
