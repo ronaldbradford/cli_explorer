@@ -128,6 +128,10 @@ $ openstack [ --os-username=&lt;user> ...] [ -q | -v | ...] [help] image list [ 
     <div class="container-fluid">
       <fieldset>
         <legend>Authentication</legend>
+        <div id="msg2" class="alert alert-dismissible" role="alert" style="display:none">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <span id="msg2-text"></span>
+        </div> <! -- #msg2 -->
         <form class="form-inline" method="POST">
           <div class="row" style="margin-top:40px">
           <div class="col-md-12">
@@ -175,7 +179,7 @@ $ openstack [ --os-username=&lt;user> ...] [ -q | -v | ...] [help] image list [ 
           <pre id="stdout2"></pre>
           <h3>Errors (stderr)</h3>
           <pre id="stderr2"></pre>
-        </div>
+        </div> <!-- authentication_response -->
       </fieldset>
     </div> <!-- container -->
   </section> <!-- login_page -->
@@ -496,6 +500,7 @@ $('#authentication_page .save').click(function() {
 $('#authentication_page .test').click(function() {
   console.log('#authentication_page.test');
   $('#banner').hide();
+  $('#msg2').hide();
   option = $(this).text();
   
   auth_url = $('#authentication_page input[name=os-auth-url]').val();
@@ -509,14 +514,16 @@ $('#authentication_page .test').click(function() {
   if (option == 'Test URL') {
     args += auth_url;
   } else if (option == 'Test Values') {
-    execute  = 'curl -sL -H "Content-Type: application/json" -X POST';
-    args += ' -d \'{ "auth": { "tenantName": "' + project_name + '", "passwordCredentials": { "username": "' + username + '", "password": "' + password + '" } } }\'';
+    args  = '-H "Content-Type:application/json" -X POST ';
+    args += '-d \'{"auth":{"tenantName":"' + project_name + '","passwordCredentials":{"username":"' + username + '","password":"' + password + '"}}}\'';
     args += ' ' + auth_url + '/tokens';
   }
 
   execute = cli + " " + args;
   console.log('Executing ' + execute);
 
+  $('#authentication_console').show();
+  $('#authentication_response').hide();
   $('#execute2').text(execute);
   $('#rc2').text('');
   $('#stdout2').text('');
@@ -525,8 +532,8 @@ $('#authentication_page .test').click(function() {
   url = 'http://' + window.location.hostname + ':4242/api/cli';
   data = "command=" + cli +  "&args=" + args;
   console.log(url + " " + data);
-  $('#msg-text').text('Running command');
-  $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show();
+  $('#msg2-text').text('Running command');
+  $('#msg2').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show();
 
   $.ajax({
     method: 'POST',
@@ -536,29 +543,26 @@ $('#authentication_page .test').click(function() {
     success: function(data, textStatus, jQxhr){
       if (data && data.error) {
         console.log(data.error);
-        $('#msg-text').text(data.error);
-        $('#msg').removeClass('alert-warning').removeClass('alert-success').addClass('alert-danger').show();
+        $('#msg2-text').text(data.error);
+        $('#msg2').removeClass('alert-warning').removeClass('alert-success').addClass('alert-danger').show();
       }
       else {
-        $('#msg-text').text('Successfully ran command.');
-        $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show().fadeOut(2000);
+        $('#msg2-text').text('Successfully ran command.');
+        $('#msg2').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show().fadeOut(2000);
         $('#rc2').text(data.status);
-        formatted = JSON.stringify(data.stdout,null,4);
-        console.log(formatted);
         $('#stdout2').text(data.stdout);
         $('#stderr2').text(data.stderr);
       }
     },
  
     error: function(jqXhr, textStatus, errorThrown ){
-      $('#msg-text').text('Error executing the command with web API.');
-      $('#msg').removeClass('alert-warning').removeClass('alert-success').addClass('alert-danger').show();
+      $('#msg2-text').text('Error executing the command with web API.');
+      $('#msg2').removeClass('alert-warning').removeClass('alert-success').addClass('alert-danger').show();
       console.log("Error executing API call");
     }
   });
 
   $('#authentication_response').show();
-  $('#authentication_console').show();
 
   return false;
 });
@@ -658,16 +662,20 @@ $('#explorer_page .run').click(function() {
 
   execute = cli + " " + args;
 
+  $('#explorer_console').hide();
   $('#execute').text(execute);
   $('#rc').text('');
   $('#stdout').text('');
   $('#stderr').text('');
-  $('#explorer_console').show();
   console.log('Executing ' + execute);
 
   url = 'http://' + window.location.hostname + ':4242/api/cli';
   data = "command=" + cli +  "&args=" + args;
   console.log(url + " " + data);
+
+  $('#msg-text').text('Running command');
+  $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show();
+
   $.ajax({
     method: 'POST',
     url:  url,
@@ -685,6 +693,7 @@ $('#explorer_page .run').click(function() {
         $('#rc').text(data.status);
         $('#stdout').text(data.stdout);
         $('#stderr').text(data.stderr);
+        $('#explorer_console').show();
       }
     },
     error: function(jqXhr, textStatus, errorThrown ){
