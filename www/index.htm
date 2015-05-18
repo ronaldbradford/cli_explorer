@@ -730,11 +730,17 @@ $('#explorer_page .run').click(function() {
         $('#msg').removeClass('alert-warning').removeClass('alert-success').addClass('alert-danger').show();
       }
       else {
-        $('#msg-text').text('Successfully ran command.');
-        $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show().fadeOut(2000);
         $('#rc').text(data.status);
         $('#stdout').text(data.stdout);
         $('#stderr').text(data.stderr);
+        if (data.stderr) {
+          $('#msg-text').text('WARNNG: stderr found running command.');
+          $('#msg').removeClass('alert-success').removeClass('alert-danger').addClass('alert-warning').show();
+        } else {
+          $('#msg-text').text('Successfully ran command.');
+          $('#msg').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show().fadeOut(2000);
+        }
+       
         $('#console_page').show();
       }
     },
