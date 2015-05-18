@@ -36,7 +36,7 @@ api = Flask(__name__)
 api.config['SERVER_NAME'] = domain
 
 # Ensure the API has endpoint discovery
-@api.route('/')
+@api.route('/api')
 @crossdomain(origin='*')
 def index():
     return jsonify({'apis' : [ '/api/cli' ]})
@@ -57,7 +57,7 @@ def execute():
     args = request.form['args'].strip()
 
     # To further hobble this generic execute OS command, we retrict the commands
-    valid_commands = [ 'date', 'openstack', 'nova' ]
+    valid_commands = [ 'date', 'openstack', 'curl', 'nova' ]
     if command not in valid_commands:
         return jsonify({'error': 'The supplied command is invalid'}), 200
 
