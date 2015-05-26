@@ -584,7 +584,8 @@ $('#authentication_page .test').click(function() {
         $('#msg2-text').text('Successfully ran command.');
         $('#msg2').removeClass('alert-warning').removeClass('alert-danger').addClass('alert-success').show().fadeOut(2000);
         $('#rc').text(data.status);
-        $('#stdout').text(data.stdout);
+        console.log(data.stdout);
+        $('#stdout').text(JSON.stringify(JSON.parse(data.stdout),null,4));
         $('#stderr').text(data.stderr);
       }
     },
@@ -685,6 +686,8 @@ $('#explorer_page .run').click(function() {
     if (os.format[key]) {
       args += " " + os.format[key];
     }
+    if (key == "format")
+      output_format=os.format[key];
   }
 
 
@@ -731,7 +734,11 @@ $('#explorer_page .run').click(function() {
       }
       else {
         $('#rc').text(data.status);
-        $('#stdout').text(data.stdout);
+        console.log(data.stdout);
+        stdout=data.stdout;
+        if (output_format == "-f json")
+          stdout = JSON.stringify(JSON.parse(data.stdout),null,4);
+        $('#stdout').text(stdout)
         $('#stderr').text(data.stderr);
         if (data.stderr) {
           $('#msg-text').text('WARNNG: stderr found running command.');
