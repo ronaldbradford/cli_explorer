@@ -207,7 +207,8 @@ $ openstack [ --os-username=&lt;user> ...] [ -q | -v | ...] [help] image list [ 
           <div class="form-group">
             <label for="format">Display Format</label>
             <select name="format" class="form-control">
-              <option value="-f table"">Table (Default)</option>
+              <option value=""></option>
+              <option value="-f table">Table (Default)</option>
               <option value="-f csv">CSV (-f csv)</option>
               <option value="-f json">JSON (-f json)</option>
               <option value="-f html">HTML (-f html)</option>
@@ -427,7 +428,7 @@ function show_explorer_page(el) {
   if (os && os.explorer) {
     $('#explorer_page select[name=command]').val(os.explorer['command']);
     $('#explorer_page select[name=action]').val(os.explorer['action']);
-    $('#explorer_page input[name=help]').val(os.explorer['help']);
+    $('#explorer_page input[name=help]').prop('checked', (os.explorer['help'] == 'help'));
     $('#explorer_page input[name=options]').val(os.explorer['options']);
   }
   $('#explorer_page').show();
@@ -672,8 +673,9 @@ $('#explorer_page .run').click(function() {
   }
 
   help = $('#explorer_page input[name=help]:checked').val();
-  if (help)
+  if (help) {
     args += " " + help;
+  }
 
   // Add in the command and action
   if (args) 
@@ -682,6 +684,7 @@ $('#explorer_page .run').click(function() {
   args += command + " " + action;
 
   // Add the formatting options 
+  output_format="";
   for (var key in os.format) {
     if (os.format[key]) {
       args += " " + os.format[key];
