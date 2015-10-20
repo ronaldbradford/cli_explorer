@@ -3,7 +3,8 @@
 ## Installing pre requisites
 
 If you have a virgin Ubuntu server, the following steps will install 
-and configure a working web environment and OpenStack dev environment.
+and configure a working web environment to demonstrate the CLI Explorer
+with a local OpenStack dev environment running the OpenStack Client only.
 
 
 ```
@@ -30,7 +31,6 @@ exit # from root
 
 In order to run the various CLI commands these must be installed on server running the web container.
 
-
 ### Install from source
 
 ```
@@ -44,10 +44,11 @@ python setup.py install
 pip install flask
 ```
 
+This will setup a virtual environment ready to run the Flask container.
+
 ### Install from Ubuntu packages
 
 This is an example of using the OpenStack Kilo client tools on Ubuntu 14.04 LTS.
-
 
 ```
   sudo apt-get install ubuntu-cloud-keyring
@@ -68,17 +69,17 @@ You will also need to install the Python pip installer and flask module.
 
 ## Verifying the API Endpoint
 
-After you have a working environment you can verify the API endpoint with:
+After you have a working environment you can start the API endpoint with:
 
 ```
 python /var/www/cli_explorer/api/api.py 
 ```
 
-This command will provide stdout statup and requests like:
+This command will provide stdout for the startup and requests like:
 
 ```
 * Running on http://127.0.0.1:4242/ (Press CTRL+C to quit)
- * Restarting with stat
+* Restarting with stat
 ```
 
 In a different session you can validate the API endpoint is working with:
@@ -102,14 +103,16 @@ And you will see the stdout of the request in the flask window.
 
 
 ```
-* Running on http://127.0.0.1:4242/ (Press CTRL+C to quit)
- * Restarting with stat
+...
 127.0.0.1 - - [20/Oct/2015 16:54:50] "GET /api HTTP/1.1" 200 -
+...
 ```
 
-If you wish to run this on a public webserver rather than localhost
-you will need to alter the configuration in /var/www/cli_explorer/etc/cli_explorer.conf
-to define the public url and ip address.
+If you wish to run this on a public URL rather than localhost
+you will need to modift the configuration in /var/www/cli_explorer/etc/cli_explorer.conf
+to define the public URL and IP address of the server.
 
+## Future Work
 
 TODO:  Ensure the flask process can run in a daemon process.
+
