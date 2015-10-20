@@ -11,7 +11,7 @@ The User Interface can run in any web container (e.g. Apache).
 
 The API that executes the actual CLI commands currently runs in a Python Flask container.
 
-See INSTALL.md for how to setup a local running copy of CLI Explorer.
+See the [INSTALL](INSTALL.md) documentation for how to setup a local running copy of CLI Explorer.
 
 # Usage
 
