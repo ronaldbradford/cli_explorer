@@ -7,15 +7,15 @@ Created by Ronald Bradford <me@ronaldbradford.com>
 
 The User Interface can run in any web container (e.g. Apache).
 
-The API that executes the actual commands currently runs with Flask.
+The API that executes the actual CLI commands currently runs in a Flask container.
 
 ```
  $ sudo pip install flask
 ```
 
-# CLI Tools
+# CLI Commands
 
-In order to run the various tools these must also be installed on server running the web container.
+In order to run the various CLI commands these must be installed on server running the web container.
 
 This is an example of using the OpenStack Kilo client tools on Ubuntu 14.04 LTS.
 
@@ -26,7 +26,7 @@ sudo apt-get update
 sudo apt-get install python-openstackclient
 ```
 
-In addition to installing *openstack*, the other OpenStack clients such as *nova* and *glance* are installed.
+In addition to installing *openstack*, the other OpenStack clients such as *nova* and *glance* are installed with these commands.
 
 # Usage
 
