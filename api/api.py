@@ -19,6 +19,7 @@ from flask import Flask, jsonify, request, abort
 from subprocess import Popen, PIPE
 from crossdomain import crossdomain
 import ConfigParser
+import shlex
 
 
 cnf = os.path.dirname(os.path.realpath(__file__)) + '/../etc/cli_explorer.cnf'
@@ -62,7 +63,7 @@ def execute():
         return jsonify({'error': 'The supplied command is invalid'}), 200
 
     # Build the python specific execute command
-    execute = [command] + ((args) and args.split(' '))
+    execute = [command] + ((args) and shlex.split(args))
     api.logger.info('Executing ' + str(execute))
 
     # Execute the command
