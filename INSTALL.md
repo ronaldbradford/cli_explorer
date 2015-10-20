@@ -27,6 +27,11 @@ and configure a working web environment and OpenStack dev environment.
 
 ## Install OpenStack Client
 
+In order to run the various CLI commands these must be installed on server running the web container.
+
+
+### Install from source
+
 ```
   git clone https://git.openstack.org/openstack/python-openstackclient
   cd python-openstackclient
@@ -35,7 +40,32 @@ and configure a working web environment and OpenStack dev environment.
   python setup.py build
   python setup.py install
   pip install flask
+```
 
+### Install from Ubuntu packages
+
+This is an example of using the OpenStack Kilo client tools on Ubuntu 14.04 LTS.
+
+```
+  sudo apt-get install -y python-pip
+  sudo pip install flask
+```
+
+```
+  sudo apt-get install ubuntu-cloud-keyring
+  echo "deb http://ubuntu-cloud.archive.canonical.com/ubuntu trusty-updates/kilo main"  | sudo tee /etc/apt/sources.list.d/cloudarchive-kilo.list
+  sudo apt-get update
+  sudo apt-get install python-openstackclient
+```
+
+In addition to installing *openstack*, the other OpenStack clients such as *nova* and *glance* are installed with these commands.
+
+
+## Verifying API Endpoint
+
+After you have a working environment you can verify the API endpoint with
+
+```
   python /var/www/cli_explorer/api/api.py 
 ```
 
@@ -53,5 +83,6 @@ In a different session you can validate the API endpoint is working with:
 ```
 
 
-If you wish to run this on a public webserver rather then localhost
+If you wish to run this on a public webserver rather than localhost
 you will need to alter the configuration in /var/www/cli_explorer/etc/cli_explorer.conf
+to define the public url and ip address.
