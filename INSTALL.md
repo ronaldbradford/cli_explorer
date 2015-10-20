@@ -86,3 +86,6 @@ In a different session you can validate the API endpoint is working with:
 If you wish to run this on a public webserver rather than localhost
 you will need to alter the configuration in /var/www/cli_explorer/etc/cli_explorer.conf
 to define the public url and ip address.
+
+
+TODO:  Ensure the flask process can run in a daemon process.
