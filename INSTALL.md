@@ -7,23 +7,23 @@ and configure a working web environment and OpenStack dev environment.
 
 
 ```
-  sudo apt-get install -y apache2 git-core
+sudo apt-get install -y apache2 git-core
 ```
 
 ## Install CLI Explorer code
 
 ```
-  sudo su -
-  cd /var/www
-  git clone https://github.com/ronaldbradford/cli_explorer.git
-  cp cli_explorer/etc/cli_explorer.cnf.example cli_explorer/etc/cli_explorer.cnf
-  cp cli_explorer/etc/apache2/sites-available/cli_explorer.conf /etc/apache2/sites-available
-  ln -s /etc/apache2/sites-available/cli_explorer.conf /etc/apache2/sites-enabled
-  echo "ServerName apache2" > /etc/apache2/conf-enabled/servername.conf
-  apachectl graceful
+sudo su -
+cd /var/www
+git clone https://github.com/ronaldbradford/cli_explorer.git
+cp cli_explorer/etc/cli_explorer.cnf.example cli_explorer/etc/cli_explorer.cnf
+cp cli_explorer/etc/apache2/sites-available/cli_explorer.conf /etc/apache2/sites-available
+ln -s /etc/apache2/sites-available/cli_explorer.conf /etc/apache2/sites-enabled
+echo "ServerName "`hostname` > /etc/apache2/conf-enabled/servername.conf
+rm /etc/apache2/sites-enabled/000-default.conf
+apachectl graceful
+curl -s http://localhost | grep title
 ```
-
-
 
 ## Install OpenStack Client
 
@@ -33,13 +33,13 @@ In order to run the various CLI commands these must be installed on server runni
 ### Install from source
 
 ```
-  git clone https://git.openstack.org/openstack/python-openstackclient
-  cd python-openstackclient
-  tox -e py27
-  . .tox/py27/bin/activate
-  python setup.py build
-  python setup.py install
-  pip install flask
+git clone https://git.openstack.org/openstack/python-openstackclient
+cd python-openstackclient
+tox -e py27
+. .tox/py27/bin/activate
+python setup.py build
+python setup.py install
+pip install flask
 ```
 
 ### Install from Ubuntu packages
