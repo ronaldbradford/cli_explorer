@@ -9,10 +9,6 @@ The User Interface can run in any web container (e.g. Apache).
 
 The API that executes the actual CLI commands currently runs in a Flask container.
 
-```
- $ sudo pip install flask
-```
-
 # CLI Commands
 
 In order to run the various CLI commands these must be installed on server running the web container.
