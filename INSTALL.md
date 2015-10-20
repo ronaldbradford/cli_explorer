@@ -23,6 +23,7 @@ echo "ServerName "`hostname` > /etc/apache2/conf-enabled/servername.conf
 rm /etc/apache2/sites-enabled/000-default.conf
 apachectl graceful
 curl -s http://localhost | grep title
+exit # from root
 ```
 
 ## Install OpenStack Client
@@ -33,6 +34,7 @@ In order to run the various CLI commands these must be installed on server runni
 ### Install from source
 
 ```
+sudo apt-get install -y python-dev python-tox
 git clone https://git.openstack.org/openstack/python-openstackclient
 cd python-openstackclient
 tox -e py27
@@ -46,10 +48,6 @@ pip install flask
 
 This is an example of using the OpenStack Kilo client tools on Ubuntu 14.04 LTS.
 
-```
-  sudo apt-get install -y python-pip
-  sudo pip install flask
-```
 
 ```
   sudo apt-get install ubuntu-cloud-keyring
@@ -61,20 +59,38 @@ This is an example of using the OpenStack Kilo client tools on Ubuntu 14.04 LTS.
 In addition to installing *openstack*, the other OpenStack clients such as *nova* and *glance* are installed with these commands.
 
 
-## Verifying API Endpoint
-
-After you have a working environment you can verify the API endpoint with
+You will also need to install the Python pip installer and flask module.
 
 ```
-  python /var/www/cli_explorer/api/api.py 
+  sudo apt-get install -y python-pip
+  sudo pip install flask
+```
+
+## Verifying the API Endpoint
+
+After you have a working environment you can verify the API endpoint with:
+
+```
+python /var/www/cli_explorer/api/api.py 
+```
+
+This command will provide stdout statup and requests like:
+
+```
+* Running on http://127.0.0.1:4242/ (Press CTRL+C to quit)
+ * Restarting with stat
 ```
 
 In a different session you can validate the API endpoint is working with:
 
 
 ```
-  curl http://localhost:4242/api
+curl http://localhost:4242/api
+```
 
+This will return a JSON response of the available API endpoints:
+
+```
 {
   "apis": [
     "/api/cli"
@@ -82,6 +98,14 @@ In a different session you can validate the API endpoint is working with:
 }
 ```
 
+And you will see the stdout of the request in the flask window.
+
+
+```
+* Running on http://127.0.0.1:4242/ (Press CTRL+C to quit)
+ * Restarting with stat
+127.0.0.1 - - [20/Oct/2015 16:54:50] "GET /api HTTP/1.1" 200 -
+```
 
 If you wish to run this on a public webserver rather than localhost
 you will need to alter the configuration in /var/www/cli_explorer/etc/cli_explorer.conf
